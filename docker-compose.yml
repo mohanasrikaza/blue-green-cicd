@@ -1,0 +1,29 @@
+services:
+  blue:
+    build: .
+    container_name: blue
+    environment:
+      APP_VERSION: "blue-v1"
+      APP_HEALTHY: "true"
+    expose:
+      - "5000"
+
+  green:
+    build: .
+    container_name: green
+    environment:
+      APP_VERSION: "green-v2"
+      APP_HEALTHY: "true"
+    expose:
+      - "5000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - blue
+      - green
